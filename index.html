@@ -1,74 +1,63 @@
----
-layout: default
-title: Home
-notitle: true
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 Chatbot | GitHub Pages</title>
+    <!-- 基础样式：适配PC/手机，优化显示效果 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        /* Chatbot容器：适配不同屏幕尺寸 */
+        .chatbot-wrapper {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: 600px; /* 保证Chatbot有足够高度 */
+        }
+        /* 适配手机端 */
+        @media (max-width: 768px) {
+            .chatbot-wrapper {
+                min-height: 400px;
+                margin: 0 -10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>我的智能聊天机器人</h1>
+        <p>基于 Hugging Face 部署，嵌入 GitHub Pages 展示</p>
+    </div>
 
-# groups of columns of {roles: list, width: num, image: bool}
-role-tables:
-- - roles: [faculty, postdoc, staff]
-    width: 4
-    image: true
-  - roles: [grad]
-    width: 8
-    image: true
-- - roles: [collab, ugrad, ugrad-alum]
-    width: 5
-    image: false
-  - roles: [alum]
-    width: 7
-    image: false
+    <!-- 核心：嵌入你的 Hugging Face Chatbot -->
+    <div class="chatbot-wrapper">
+        <gradio-app 
+            src="https://nanguo515-slices.hf.space"  <!-- 你的Space地址，已帮你填好 -->
+            embed="true"                              <!-- 强制嵌入模式，避免登录问题 -->
+            theme-mode="light"                        <!-- 浅色主题，适配页面风格 -->
+            width="100%"                              <!-- 宽度自适应容器 -->
+            height="100%"                             <!-- 高度自适应容器 -->
+        ></gradio-app>
+    </div>
 
----
-
-<div class="jumbotron">
-    <p>
-        <b>肖航课题组</b>开发了首个<b>基于字符串的可逆晶体表示法: SLICES</b>,实现了生成式AI驱动的<b>Text2Crystal</b>。SLICES有望成为AI驱动的晶体材料逆向设计的标准工具,即<b>晶体材料的"SMILES"</b>。 
-    </p>
-    <p>
-    The <b>XIAO Research Group</b> developed the first <b>string-based invertible, invariant crystallographic representation: SLICES</b>, achieving <b>Text2Crystal</b> powered by generative AI. SLICES has the potential to become a standard tool for <i> in-silico </i> materials discovery, i.e. "SMILES" for crystal structures.
-    </p>
-</div>
-
-<section>
-    <h2>News</h2>
-    <ul class="news list-unstyled">
-        {% for post in site.posts limit: site.front_page_news %}
-            {% include news-item.html item=post %}
-        {% endfor %}
-    </ul>
-    {% assign numposts = site.posts | size %}
-    {% if numposts >= 1 %}
-        <p>
-            <span class="fa fa-fw fa-history"></span>
-            <a href="{{ site.base }}/blog.html">Older posts&hellip;</a>
-        </p>
-    {% endif %}
-</section>
-
-<script
-	type="module"
-	src="https://gradio.s3-us-west-2.amazonaws.com/4.41.0/gradio.js"
-></script>
-
-<gradio-app src="https://xiaohang07-slices.hf.space" theme_mode="light"></gradio-app>
-
-<gradio-app src="https://xiaohang07-mattergpt-cpu.hf.space" theme_mode="light"></gradio-app>
-
-
-
-
-
-<div id="people">
-    <h2>People</h2>
-    {% for role-table in page.role-tables %}
-        <section class="people row justify-content-between">
-            {% for role-column in role-table %}
-                <div class="col-md-{{ role-column.width }}">
-                    {% for role in role-column.roles %}
-                        {% include role-people.html role=role image=role-column.image %}
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </section>
-    {% endfor %}
-</div>
+    <!-- 引入Gradio官方嵌入脚本（最新稳定版，解决兼容性） -->
+    <script type="module" src="https://gradio.app/gradio.js"></script>
+</body>
+</html>
